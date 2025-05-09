@@ -10,11 +10,13 @@
 // }
 // something new
 pipeline {
-    agent { docker { image 'node:22.15.0-alpine3.21' } }
+    agent {
+        docker { image 'node:22.15.0-alpine3.21' }
+    }
     stages {
-        stage('build') {
+        stage('Test') {
             steps {
-                sh 'node --version'
+                sh 'node --eval "console.log(process.arch,process.platform)"'
             }
         }
     }
