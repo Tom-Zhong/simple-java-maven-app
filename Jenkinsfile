@@ -1,22 +1,19 @@
-// pipeline {
-//     agent { docker { image 'maven:3.9.9-eclipse-temurin-21-alpine' } }
-//     stages {
-//         stage('build') {
-//             steps {
-//                 sh 'mvn --version'
-//             }
-//         }
-//     }
-// }
-// something new
 pipeline {
     agent {
-        docker { image 'node:22.15.0-alpine3.21' }
+        label '!windows'
     }
+
+    environment {
+        DISABLE_AUTH = 'true'
+        DB_ENGINE    = 'sqlite'
+    }
+
     stages {
-        stage('Test') {
+        stage('Build') {
             steps {
-                sh 'node --eval "console.log(process.arch,process.platform)"'
+                echo "Database engine is ${DB_ENGINE}"
+                echo "DISABLE_AUTH is ${DISABLE_AUTH}"
+                sh 'printenv'
             }
         }
     }
