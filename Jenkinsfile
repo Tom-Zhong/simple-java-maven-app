@@ -45,7 +45,7 @@ pipeline {
             steps {
                 // 上传构建产物到 S3
                 sh '''
-                aws s3 cp target s3://test-1234-demo-what/ --region ap-northeast-1
+                aws s3 cp ./target s3://test-1234-demo-what/ --recursive --region ap-northeast-1
                 '''
             }
         }
