@@ -12,7 +12,7 @@ pipeline {
                 // 验证 AWS CLI 配置
                 sh 'aws configure list'
                 // 示例：列出 S3 存储桶
-                sh 'aws s3api list-buckets'
+                sh 'aws ec2 describe-instances'
             }
         }
         stage('Build') { 
