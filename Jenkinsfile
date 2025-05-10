@@ -29,5 +29,13 @@ pipeline {
                 sh './jenkins/scripts/deliver.sh' 
             }
         }
+
+        stage('Python') {
+            agent { docker '3.11.12-bullseye' } 
+            steps {
+                echo 'python --version '
+                sh 'pip3 --version'
+            }
+        }
     }
 }
