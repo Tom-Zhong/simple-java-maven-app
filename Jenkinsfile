@@ -34,7 +34,9 @@ pipeline {
                 unstash 'build-artifacts'
                 sh 'docker build -t myapp:latest -f DockerfileIMG .'
                 sh 'docker images'
-                sh 'docker run --name myapp-container -p 8080:8080 myapp:latest'
+                sh 'aws ecr get-login-password --region ap-northeast-1 | docker login --username AWS --password-stdin 430517113162.dkr.ecr.ap-northeast-1.amazonaws.com'
+                sh 'docker tag myapp:latest 430517113162.dkr.ecr.ap-northeast-1.amazonaws.com/myapp:latest'
+                sh 'docker push 430517113162.dkr.ecr.ap-northeast-1.amazonaws.com/myapp:latest'
             }
         }
 
