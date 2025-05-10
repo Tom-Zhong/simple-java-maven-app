@@ -53,13 +53,6 @@ pipeline {
 
         stage('Build Docker Image') {
 
-            agent {
-                dockerfile {
-                    filename 'DockerfileIMG' // 指定 Dockerfile 文件名
-                    additionalBuildArgs '--no-cache' // 可选：添加构建参数
-                }
-             }
-
             steps {
                 // 构建 Docker 镜像
                 sh 'docker build -t my-app:1.0 .'
