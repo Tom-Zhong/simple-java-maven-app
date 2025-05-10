@@ -5,11 +5,6 @@ pipeline {
             additionalBuildArgs '--no-cache' // 可选：添加构建参数
         }
     }
-    environment {
-        AWS_ACCESS_KEY_ID = 'AKIAWIPGR2FFCTDUHEUB'
-        AWS_SECRET_ACCESS_KEY = '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'
-        AWS_DEFAULT_REGION = 'ap-northeast-1'
-    }
     stages {
         stage('Build') { 
 
