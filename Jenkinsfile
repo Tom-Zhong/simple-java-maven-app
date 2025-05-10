@@ -13,6 +13,7 @@ pipeline {
                 sh 'aws configure list'
                 // 示例：列出 S3 存储桶
                 sh 'aws ec2 describe-instances'
+                sh 'aws s3api list-buckets --region ap-northeast-1'
             }
         }
         stage('Build') { 
