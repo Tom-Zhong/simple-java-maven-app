@@ -1,7 +1,7 @@
 pipeline {
     agent {
         docker {
-            image 'maven:latest' 
+            image 'maven:3.9.9-amazoncorretto-21-alpine' 
             args '-v /root/.m2:/root/.m2' 
         }
     }
