@@ -76,6 +76,9 @@ pipeline {
                         additionalBuildArgs '--no-cache' // 可选：添加构建参数
                     }
                 }
+                steps {
+                    sh 'ls -al'
+                }
             // steps {
             //     sh './jenkins/scripts/buildDocker.sh'
             // }
