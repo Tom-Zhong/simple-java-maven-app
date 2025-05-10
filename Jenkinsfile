@@ -3,6 +3,10 @@ pipeline {
         docker {
             image 'maven:3.9.9-amazoncorretto-17-alpine' 
             args '-v /root/.m2:/root/.m2' 
+            sh 'mvn --version'
+            sh 'apt-get update'
+            sh 'apt-get install -y python3 python3-pip'
+            sh 'python3 --version && pip3 --version'
         }
     }
     stages {
