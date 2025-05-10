@@ -26,7 +26,8 @@ pipeline {
             }
             steps {
                 sh 'mvn --version'
-                sh 'mvn -B -DskipTests clean package' 
+                sh 'mvn -B -DskipTests clean package'
+                stash name: 'build-artifacts', includes: 'target/**/*'
             }
         }
 
@@ -70,18 +71,16 @@ pipeline {
 
 
         stage('Build Docker Image') {
-                agent {
-                    dockerfile {
-                        filename 'DockerfileIMG' // 指定 Dockerfile 文件名
-                        additionalBuildArgs '--no-cache' // 可选：添加构建参数
-                    }
+            agent {
+                docker {
+                    image 'docker:latest' // 使用官方 Docker 镜像
+                    args '-v /var/run/docker.sock:/var/run/docker.sock'
                 }
-                steps {
-                    sh 'ls -al'
-                }
-            // steps {
-            //     sh './jenkins/scripts/buildDocker.sh'
-            // }
+            }
+            steps {
+                unstash 'build-artifacts'
+                sh './jenkins/scripts/buildDocker.sh'
+            }
         }
 
     }

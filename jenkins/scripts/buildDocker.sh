@@ -1,0 +1,1 @@
+docker build -t hell-world:v1.0 . -f DockerfileIMG
