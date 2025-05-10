@@ -10,8 +10,6 @@ pipeline {
 
             steps {
                 sh 'mvn --version'
-                sh 'python --version'
-                sh 'pip --version'
                 sh 'aws --version'
                 sh 'mvn -B -DskipTests clean package' 
             }
