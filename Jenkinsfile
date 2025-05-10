@@ -31,7 +31,7 @@ pipeline {
         }
 
         stage('Python') {
-            agent { docker '3.11.12-bullseye' } 
+            agent { docker 'python:3.11.12-bullseye' } 
             steps {
                 echo 'python --version '
                 sh 'pip3 --version'
