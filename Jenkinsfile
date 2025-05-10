@@ -8,7 +8,7 @@ pipeline {
     environment {
         AWS_ACCESS_KEY_ID = 'AKIAWIPGR2FFCTDUHEUB'
         AWS_SECRET_ACCESS_KEY = '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'
-        AWS_DEFAULT_REGION = 'ap-east-1'
+        AWS_DEFAULT_REGION = 'ap-northeast-1'
     }
     stages {
         stage('Build') { 
