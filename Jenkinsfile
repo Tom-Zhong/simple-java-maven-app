@@ -13,6 +13,10 @@ pipeline {
                 sh 'aws configure list'
                 // 示例：列出 S3 存储桶
                 sh 'aws ec2 describe-instances'
+                sh 'aws s3api create-bucket \
+    --bucket amzn-s3-demo-bucket1$(uuidgen | tr -d - | tr '[:upper:]' '[:lower:]' ) \
+    --region ap-northeast-1 \
+    --create-bucket-configuration LocationConstraint=ap-northeast-1'
                 sh 'aws s3api list-buckets --region ap-northeast-1'
             }
         }
