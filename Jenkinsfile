@@ -9,6 +9,7 @@ pipeline {
         stage('Build') { 
 
             steps {
+                sh 'aws configure import --csv file:///root/.aws/credentials.csv'
                 sh 'mvn --version'
                 sh 'aws configure list'
                 sh 'aws --version'
