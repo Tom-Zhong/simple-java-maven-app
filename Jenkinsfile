@@ -1,13 +1,14 @@
 pipeline {
-    agent {
-        dockerfile {
-            filename 'Dockerfile' // 指定 Dockerfile 文件名
-            additionalBuildArgs '--no-cache' // 可选：添加构建参数
-        }
-    }
+    agent any
     stages {
 
         stage('AWS CLI Test') {
+            agent {
+                dockerfile {
+                    filename 'Dockerfile' // 指定 Dockerfile 文件名
+                    additionalBuildArgs '--no-cache' // 可选：添加构建参数
+                }
+            }
             steps {
                 // 验证 AWS CLI 配置
                 sh 'aws configure list'
@@ -17,6 +18,12 @@ pipeline {
             }
         }
         stage('Build') { 
+            agent {
+                dockerfile {
+                    filename 'Dockerfile' // 指定 Dockerfile 文件名
+                    additionalBuildArgs '--no-cache' // 可选：添加构建参数
+                }
+            }
             steps {
                 sh 'mvn --version'
                 sh 'mvn -B -DskipTests clean package' 
@@ -24,6 +31,12 @@ pipeline {
         }
 
         stage('Test') {
+            agent {
+                dockerfile {
+                    filename 'Dockerfile' // 指定 Dockerfile 文件名
+                    additionalBuildArgs '--no-cache' // 可选：添加构建参数
+                }
+            }
             steps {
                 sh 'mvn test'
             }
@@ -35,7 +48,12 @@ pipeline {
         }
 
         stage('Deliver') {
-
+            agent {
+                dockerfile {
+                    filename 'Dockerfile' // 指定 Dockerfile 文件名
+                    additionalBuildArgs '--no-cache' // 可选：添加构建参数
+                }
+            }
             steps {
                 sh './jenkins/scripts/deliver.sh'
             }
@@ -52,9 +70,15 @@ pipeline {
 
 
         stage('Build Docker Image') {
-            steps {
-                sh './jenkins/scripts/buildDocker.sh'
-            }
+                agent {
+                    dockerfile {
+                        filename 'DockerfileIMG' // 指定 Dockerfile 文件名
+                        additionalBuildArgs '--no-cache' // 可选：添加构建参数
+                    }
+                }
+            // steps {
+            //     sh './jenkins/scripts/buildDocker.sh'
+            // }
         }
 
     }
