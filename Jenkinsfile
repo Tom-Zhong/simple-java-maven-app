@@ -39,9 +39,18 @@ pipeline {
             }
         }
 
-         stage('Deliver') {
+        stage('Deliver') {
             steps {
                 sh './jenkins/scripts/deliver.sh'
+            }
+        }
+
+        stage('Upload to S3') {
+            steps {
+                // 上传构建产物到 S3
+                sh '''
+                aws s3 cp target/my-app-1.0-SNAPSHOT.jar s3://test-1234-demo-what/ --region ap-northeast-1
+                '''
             }
         }
     }
