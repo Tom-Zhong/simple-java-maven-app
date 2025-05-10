@@ -1,8 +1,8 @@
 pipeline {
     agent {
-        docker {
-            image 'maven:3.9.9-amazoncorretto-17-alpine' 
-            args '-v /root/.m2:/root/.m2' 
+        dockerfile {
+            filename 'Dockerfile' // 指定 Dockerfile 文件名
+            additionalBuildArgs '--no-cache' // 可选：添加构建参数
         }
     }
     stages {
@@ -27,14 +27,6 @@ pipeline {
          stage('Deliver') { 
             steps {
                 sh './jenkins/scripts/deliver.sh' 
-            }
-        }
-
-        stage('Python') {
-            steps {
-                sh 'sudo apk add --no-cache python3 py3-pip'
-                sh 'sudo python3 --version'
-                sh 'sudo pip3 --version'
             }
         }
     }
