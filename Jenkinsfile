@@ -52,7 +52,12 @@ pipeline {
 
 
         stage('Build Docker Image') {
-
+            agent {
+                docker {
+                    image 'docker:latest' // 使用 Docker 镜像
+                    args '-v /var/run/docker.sock:/var/run/docker.sock' // 挂载 Docker 套接字
+                }
+            }
             steps {
                 // 构建 Docker 镜像
                 sh 'docker build -t my-app:1.0 .'
