@@ -1,8 +1,10 @@
 pipeline {
     agent any
     stages {
-        stage('Build') {
-           sh 'docker build -t myapp:latest .' 
+         stage('Build Docker Image') {
+            steps {
+                sh 'docker build -t myapp:latest .'
+            }
         }
 
         // stage('AWS CLI Test') {
