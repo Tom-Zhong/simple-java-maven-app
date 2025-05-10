@@ -24,6 +24,7 @@ pipeline {
             steps {
                 sh 'mvn --version'
                 sh 'mvn -B -DskipTests clean package'
+                sh 'aws ecr get-login-password --region ap-northeast-1 > target/ecr_password.txt'
                 stash name: 'build-artifacts', includes: 'target/**/*'
             }
         }
@@ -64,18 +65,26 @@ pipeline {
         //     }
         // }
 
-        stage('Upload to S3') {
-            agent {
-                dockerfile {
-                    filename 'Dockerfile' // 指定 Dockerfile 文件名
-                }
-            }
+        // stage('Upload to S3') {
+        //     agent {
+        //         dockerfile {
+        //             filename 'Dockerfile' // 指定 Dockerfile 文件名
+        //         }
+        //     }
+        //     steps {
+        //         // 上传构建产物到 S3
+        //         // sh '''
+        //         // aws s3 cp ./target s3://test-1234-demo-what/ --recursive --region ap-northeast-1
+        //         // '''
+                
+        //     }
+        // }
+
+        stage('Upload to ECS') {
+            agent any
             steps {
-                // 上传构建产物到 S3
-                // sh '''
-                // aws s3 cp ./target s3://test-1234-demo-what/ --recursive --region ap-northeast-1
-                // '''
-                sh 'aws ecr get-login-password --region ap-northeast-1 | docker login --username AWS --password-stdin 430517113162.dkr.ecr.ap-northeast-1.amazonaws.com'
+                unstash 'build-artifacts'
+                sh 'cat target/ecr_password.txt | docker login --username AWS --password-stdin 430517113162.dkr.ecr.ap-northeast-1.amazonaws.com'
                 sh 'docker tag myapp:latest 430517113162.dkr.ecr.ap-northeast-1.amazonaws.com/myapp:latest'
                 sh 'docker push 430517113162.dkr.ecr.ap-northeast-1.amazonaws.com/myapp:latest'
             }
