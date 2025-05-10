@@ -14,4 +14,4 @@ RUN unzip awscliv2.zip
 RUN pwd
 RUN ls
 RUN ./aws/install --bin-dir /usr/local/bin --install-dir /usr/local/aws-cli --update
-RUN aws --version
+RUN /usr/local/bin/aws --version
