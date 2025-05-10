@@ -7,7 +7,7 @@ RUN apk add --no-cache aws-cli
 WORKDIR /tmp/.aws
 COPY ./test1234_accessKeys.csv /tmp/.aws/credentials.csv
 
-RUN aws configure import --csv file:///tmp/.aws/credentials.csv
-
 # 检查安装是否成功
 RUN aws --version
+
+CMD ["aws configure import --csv file:///tmp/.aws/credentials.csv "]
