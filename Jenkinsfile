@@ -34,38 +34,35 @@ pipeline {
                 unstash 'build-artifacts'
                 sh 'docker build -t myapp:latest -f DockerfileIMG .'
                 sh 'docker images'
-                sh 'aws ecr get-login-password --region ap-northeast-1 | docker login --username AWS --password-stdin 430517113162.dkr.ecr.ap-northeast-1.amazonaws.com'
-                sh 'docker tag myapp:latest 430517113162.dkr.ecr.ap-northeast-1.amazonaws.com/myapp:latest'
-                sh 'docker push 430517113162.dkr.ecr.ap-northeast-1.amazonaws.com/myapp:latest'
             }
         }
 
-        stage('Test') {
-            agent {
-                dockerfile {
-                    filename 'Dockerfile' // 指定 Dockerfile 文件名
-                }
-            }
-            steps {
-                sh 'mvn test'
-            }
-            post {
-                always {
-                    junit 'target/surefire-reports/*.xml'
-                }
-            }
-        }
+        // stage('Test') {
+        //     agent {
+        //         dockerfile {
+        //             filename 'Dockerfile' // 指定 Dockerfile 文件名
+        //         }
+        //     }
+        //     steps {
+        //         sh 'mvn test'
+        //     }
+        //     post {
+        //         always {
+        //             junit 'target/surefire-reports/*.xml'
+        //         }
+        //     }
+        // }
 
-        stage('Deliver') {
-            agent {
-                dockerfile {
-                    filename 'Dockerfile' // 指定 Dockerfile 文件名
-                }
-            }
-            steps {
-                sh './jenkins/scripts/deliver.sh'
-            }
-        }
+        // stage('Deliver') {
+        //     agent {
+        //         dockerfile {
+        //             filename 'Dockerfile' // 指定 Dockerfile 文件名
+        //         }
+        //     }
+        //     steps {
+        //         sh './jenkins/scripts/deliver.sh'
+        //     }
+        // }
 
         stage('Upload to S3') {
             agent {
@@ -75,9 +72,12 @@ pipeline {
             }
             steps {
                 // 上传构建产物到 S3
-                sh '''
-                aws s3 cp ./target s3://test-1234-demo-what/ --recursive --region ap-northeast-1
-                '''
+                // sh '''
+                // aws s3 cp ./target s3://test-1234-demo-what/ --recursive --region ap-northeast-1
+                // '''
+                sh 'aws ecr get-login-password --region ap-northeast-1 | docker login --username AWS --password-stdin 430517113162.dkr.ecr.ap-northeast-1.amazonaws.com'
+                sh 'docker tag myapp:latest 430517113162.dkr.ecr.ap-northeast-1.amazonaws.com/myapp:latest'
+                sh 'docker push 430517113162.dkr.ecr.ap-northeast-1.amazonaws.com/myapp:latest'
             }
         }
 
