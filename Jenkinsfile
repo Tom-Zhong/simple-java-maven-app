@@ -47,7 +47,6 @@ pipeline {
             agent {
                 docker {
                     image 'awscli/awscli:latest' // 使用 AWS CLI 镜像
-                    label 'aws' // 标签以匹配 Jenkins 节点
                 }
             }
             steps {
