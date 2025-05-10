@@ -1,10 +1,6 @@
 FROM maven:3.9.9-amazoncorretto-17-alpine
 
 # 安装 Python、pip 和 curl
-RUN apk add --no-cache python3 py3-pip curl && \
-    python3 --version && pip3 --version
-# 安装 AWS CLI
-RUN curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip" && \
-    unzip awscliv2.zip && \
-    ./aws/install
-CMD ["aws", "--version"]
+RUN apk add --no-cache aws-cli
+
+RUN aws --version
