@@ -53,9 +53,7 @@ pipeline {
 
         stage('Build Docker Image') {
             steps {
-                script {
-                    docker.build('test-1234-demo-what', 'DockerfileIMG')
-                }
+                sh './jenkins/scripts/buildDocker.sh'
             }
         }
 
