@@ -32,9 +32,9 @@ pipeline {
 
         stage('Python') {
             steps {
-                sh 'apk add --no-cache python3 py3-pip'
-                sh 'python3 --version'
-                sh 'pip3 --version'
+                sh 'sudo apk add --no-cache python3 py3-pip'
+                sh 'sudo python3 --version'
+                sh 'sudo pip3 --version'
             }
         }
     }
