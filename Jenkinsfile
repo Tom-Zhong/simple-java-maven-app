@@ -49,5 +49,21 @@ pipeline {
                 '''
             }
         }
+
+
+        stage('Build Docker Image') {
+
+            agent {
+                dockerfile {
+                    filename 'DockerfileIMG' // 使用自定义 Dockerfile
+                }
+            }
+
+            steps {
+                // 构建 Docker 镜像
+                sh 'docker build -t my-app:1.0 .'
+            }
+        }
+
     }
 }
