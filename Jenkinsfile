@@ -1,14 +1,13 @@
 pipeline {
-    agent any
+    agent {
+        dockerfile {
+            filename 'Dockerfile' // 指定 Dockerfile 文件名
+            additionalBuildArgs '--no-cache' // 可选：添加构建参数
+        }
+    }
     stages {
 
         stage('AWS CLI Test') {
-            agent {
-                dockerfile {
-                    filename 'Dockerfile' // 指定 Dockerfile 文件名
-                    additionalBuildArgs '--no-cache' // 可选：添加构建参数
-                }
-            }
             steps {
                 // 验证 AWS CLI 配置
                 sh 'aws configure list'
@@ -18,12 +17,6 @@ pipeline {
             }
         }
         stage('Build') { 
-            agent {
-                dockerfile {
-                    filename 'Dockerfile' // 指定 Dockerfile 文件名
-                    additionalBuildArgs '--no-cache' // 可选：添加构建参数
-                }
-            }
             steps {
                 sh 'mvn --version'
                 sh 'mvn -B -DskipTests clean package' 
@@ -31,12 +24,6 @@ pipeline {
         }
 
         stage('Test') {
-            agent {
-                dockerfile {
-                    filename 'Dockerfile' // 指定 Dockerfile 文件名
-                    additionalBuildArgs '--no-cache' // 可选：添加构建参数
-                }
-            }
             steps {
                 sh 'mvn test'
             }
@@ -48,12 +35,7 @@ pipeline {
         }
 
         stage('Deliver') {
-            agent {
-                dockerfile {
-                    filename 'Dockerfile' // 指定 Dockerfile 文件名
-                    additionalBuildArgs '--no-cache' // 可选：添加构建参数
-                }
-            }
+
             steps {
                 sh './jenkins/scripts/deliver.sh'
             }
@@ -70,15 +52,9 @@ pipeline {
 
 
         stage('Build Docker Image') {
-            agent {
-                dockerfile {
-                    filename 'DockerfileIMG' // 指定 Dockerfile 文件名
-                    additionalBuildArgs '--no-cache' // 可选：添加构建参数
-                }
-            }
             steps {
                 // 构建 Docker 镜像
-                sh 'docker build -t my-app:1.0 .'
+                sh 'docker build -t my-app:1.0 -f DockerfileIMG .'
             }
         }
 
