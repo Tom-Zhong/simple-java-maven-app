@@ -54,12 +54,7 @@ pipeline {
         stage('Build Docker Image') {
             steps {
                 script {
-                    def imageName = 'test-1234-demo-what' // 替换为你的 Docker 镜像名称
-                    def dockerfilePath = 'Dockerfile' // 替换为你的 Dockerfile 路径
-                    def tag = "${BUILD_NUMBER}" // 构建编号作为标签
-
-                    // 构建 Docker 镜像
-                    sh "docker build -t ${imageName}:${tag} -f ${dockerfilePath} ."
+                    docker.build('test-1234-demo-what', 'DockerfileIMG')
                 }
             }
         }
