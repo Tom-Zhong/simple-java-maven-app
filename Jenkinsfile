@@ -34,58 +34,50 @@ pipeline {
                 unstash 'build-artifacts'
                 sh 'docker build -t myapp:latest -f DockerfileIMG .'
                 sh 'docker images'
+                sh 'docker run --name myapp-container -p 8080:8080 myapp:latest'
             }
         }
 
-        // stage('Test') {
-        //     agent {
-        //         dockerfile {
-        //             filename 'Dockerfile' // 指定 Dockerfile 文件名
-        //         }
-        //     }
-        //     steps {
-        //         sh 'mvn test'
-        //     }
-        //     post {
-        //         always {
-        //             junit 'target/surefire-reports/*.xml'
-        //         }
-        //     }
-        // }
+        stage('Test') {
+            agent {
+                dockerfile {
+                    filename 'Dockerfile' // 指定 Dockerfile 文件名
+                }
+            }
+            steps {
+                sh 'mvn test'
+            }
+            post {
+                always {
+                    junit 'target/surefire-reports/*.xml'
+                }
+            }
+        }
 
-        // stage('Deliver') {
-        //     agent {
-        //         dockerfile {
-        //             filename 'Dockerfile' // 指定 Dockerfile 文件名
-        //         }
-        //     }
-        //     steps {
-        //         sh './jenkins/scripts/deliver.sh'
-        //     }
-        // }
+        stage('Deliver') {
+            agent {
+                dockerfile {
+                    filename 'Dockerfile' // 指定 Dockerfile 文件名
+                }
+            }
+            steps {
+                sh './jenkins/scripts/deliver.sh'
+            }
+        }
 
-        // // stage('Upload to S3') {
-        // //     steps {
-        // //         // 上传构建产物到 S3
-        // //         sh '''
-        // //         aws s3 cp ./target s3://test-1234-demo-what/ --recursive --region ap-northeast-1
-        // //         '''
-        // //     }
-        // // }
-
-
-        // stage('Build Docker Image') {
-        //     agent {
-        //         docker {
-        //             image 'docker:latest' // 使用官方 Docker 镜像
-        //             args '--privileged -v /var/run/docker.sock:/var/run/docker.sock'
-        //         }
-        //     }
-        //     steps {
-        //         unstash 'build-artifacts'
-        //         sh 'docker build -t myapp:latest .'
-        //     }
-        // }
+        stage('Upload to S3') {
+            agent {
+                dockerfile {
+                    filename 'Dockerfile' // 指定 Dockerfile 文件名
+                }
+            }
+            steps {
+                // 上传构建产物到 S3
+                sh '''
+                aws s3 cp ./target s3://test-1234-demo-what/ --recursive --region ap-northeast-1
+                '''
+            }
+        }
 
     }
 }
