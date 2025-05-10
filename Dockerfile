@@ -14,3 +14,5 @@ RUN pip3 install awscli
 
 # 验证安装
 RUN aws --version
+
+RUN where aws
