@@ -46,7 +46,7 @@ pipeline {
         stage('Deploy') {
             agent {
                 docker {
-                    image 'awscli/awscli:latest' // 使用 AWS CLI 镜像
+                    image 'amazon/aws-cli' // 使用 AWS CLI 镜像
                 }
             }
             steps {
