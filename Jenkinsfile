@@ -1,13 +1,6 @@
 pipeline {
     agent any
     stages {
-         stage('Build Docker Image') {
-            steps {
-                sh 'docker build -t myapp:latest .'
-                sh 'docker images'
-            }
-        }
-
         // stage('AWS CLI Test') {
         //     agent {
         //         dockerfile {
@@ -22,18 +15,27 @@ pipeline {
         //         sh 'aws s3api list-buckets --region ap-northeast-1'
         //     }
         // }
-        // stage('Build') { 
-        //     agent {
-        //         dockerfile {
-        //             filename 'Dockerfile' // 指定 Dockerfile 文件名
-        //         }
-        //     }
-        //     steps {
-        //         sh 'mvn --version'
-        //         sh 'mvn -B -DskipTests clean package'
-        //         stash name: 'build-artifacts', includes: 'target/**/*'
-        //     }
-        // }
+        stage('Build') { 
+            agent {
+                dockerfile {
+                    filename 'Dockerfile' // 指定 Dockerfile 文件名
+                }
+            }
+            steps {
+                sh 'mvn --version'
+                sh 'mvn -B -DskipTests clean package'
+                stash name: 'build-artifacts', includes: 'target/**/*'
+            }
+        }
+
+        stage('Build Docker Image') {
+            agent any
+            steps {
+                unstash 'build-artifacts'
+                sh 'docker build -t myapp:latest .'
+                sh 'docker images'
+            }
+        }
 
         // stage('Test') {
         //     agent {
