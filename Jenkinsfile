@@ -73,13 +73,13 @@ pipeline {
         stage('Build Docker Image') {
             agent {
                 docker {
-                    image 'docker:latest' // 使用官方 Docker 镜像
-                    args '-v /var/run/docker.sock:/var/run/docker.sock'
+                    image 'docker:dind' // 使用官方 Docker 镜像
+                    args '--privileged -v /var/run/docker.sock:/var/run/docker.sock'
                 }
             }
             steps {
                 unstash 'build-artifacts'
-                sh './jenkins/scripts/buildDocker.sh'
+                sh 'docker build -t myapp:latest .'
             }
         }
 
