@@ -31,9 +31,9 @@ pipeline {
         }
 
         stage('Python') {
-            agent { docker 'python:3.11.12-bullseye' } 
             steps {
-                echo 'python --version '
+                sh 'apk add --no-cache python3 py3-pip'
+                sh 'python3 --version'
                 sh 'pip3 --version'
             }
         }
