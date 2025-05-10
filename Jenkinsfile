@@ -10,6 +10,7 @@ pipeline {
 
             steps {
                 sh 'mvn --version'
+                sh 'aws --version'
                 sh 'mvn -B -DskipTests clean package' 
             }
         }
