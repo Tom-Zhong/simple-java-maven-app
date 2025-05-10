@@ -9,9 +9,6 @@ pipeline {
         stage('Build') { 
             steps {
                 sh 'mvn --version'
-                sh 'apt-get update'
-                sh 'apt-get install -y python3 python3-pip'
-                sh 'python3 --version && pip3 --version'
                 sh 'mvn -B -DskipTests clean package' 
             }
         }
