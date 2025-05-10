@@ -32,7 +32,7 @@ pipeline {
             agent any
             steps {
                 unstash 'build-artifacts'
-                sh 'docker build -t myapp:latest .'
+                sh 'docker build -t myapp:latest -f DockerfileIMG .'
                 sh 'docker images'
             }
         }
