@@ -11,5 +11,4 @@ RUN python3 -m pip install --user pipx --break-system-packages && \
     source ~/.bashrc && \
     pipx ensurepath && \
     pipx completions && \
-    aws --version && \
-    where aws
+    aws --version
