@@ -73,7 +73,7 @@ pipeline {
         stage('Build Docker Image') {
             agent {
                 docker {
-                    image 'docker:dind' // 使用官方 Docker 镜像
+                    image 'docker:latest' // 使用官方 Docker 镜像
                     args '--privileged -v /var/run/docker.sock:/var/run/docker.sock'
                 }
             }
