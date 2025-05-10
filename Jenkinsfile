@@ -5,12 +5,19 @@ pipeline {
             additionalBuildArgs '--no-cache' // 可选：添加构建参数
         }
     }
+    environment {
+        AWS_ACCESS_KEY_ID = 'AKIAWIPGR2FFDV232PNR'
+        AWS_SECRET_ACCESS_KEY = '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'
+        AWS_DEFAULT_REGION = 'ap-east-1'
+    }
     stages {
         stage('Build') { 
 
             steps {
                 sh 'mvn --version'
+                sh 'aws configure list'
                 sh 'aws --version'
+                sh 'aws s3api list-buckets'
                 sh 'mvn -B -DskipTests clean package' 
             }
         }
