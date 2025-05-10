@@ -1,12 +1,13 @@
 pipeline {
-    agent {
-        dockerfile {
-            filename 'Dockerfile' // 指定 Dockerfile 文件名
-            additionalBuildArgs '--no-cache' // 可选：添加构建参数
-        }
-    }
+    agent any
     stages {
         stage('Build') { 
+            agent {
+                dockerfile {
+                    filename 'Dockerfile' // 指定 Dockerfile 文件名
+                    additionalBuildArgs '--no-cache' // 可选：添加构建参数
+                }
+            }
             steps {
                 sh 'mvn --version'
                 sh 'mvn -B -DskipTests clean package' 
@@ -14,6 +15,12 @@ pipeline {
         }
 
         stage('Test') {
+            agent {
+                dockerfile {
+                    filename 'Dockerfile' // 指定 Dockerfile 文件名
+                    additionalBuildArgs '--no-cache' // 可选：添加构建参数
+                }
+            }
             steps {
                 sh 'mvn test'
             }
@@ -24,9 +31,25 @@ pipeline {
             }
         }
 
-         stage('Deliver') { 
+         stage('Deliver') {
+            agent {
+                dockerfile {
+                    filename 'Dockerfile' // 指定 Dockerfile 文件名
+                    additionalBuildArgs '--no-cache' // 可选：添加构建参数
+                }
+            }
             steps {
                 sh './jenkins/scripts/deliver.sh' 
+            }
+        }
+
+        stage('Deploy') {
+            agent {
+                image 'awscli/awscli:latest' // 使用 AWS CLI 镜像
+                label 'aws' // 标签以匹配 Jenkins 节点
+            }
+            steps {
+                sh 'aws --version'
             }
         }
     }
