@@ -9,4 +9,7 @@ RUN python3 -m pip install --user pipx --break-system-packages && \
     pipx install awscli && \
     cat ~/.bashrc && \
     source ~/.bashrc && \
-    aws --version
+    pipx ensurepath && \
+    pipx completions && \
+    aws --version && \
+    where aws
