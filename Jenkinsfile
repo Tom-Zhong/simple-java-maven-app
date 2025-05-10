@@ -14,7 +14,7 @@ pipeline {
                 // 示例：列出 S3 存储桶
                 sh 'aws ec2 describe-instances'
                 sh 'aws s3api create-bucket \
-    --bucket amzn-s3-demo-what \
+    --bucket test-1234-demo-what \
     --region ap-northeast-1 \
     --create-bucket-configuration LocationConstraint=ap-northeast-1'
                 sh 'aws s3api list-buckets --region ap-northeast-1'
