@@ -126,16 +126,16 @@ pipeline {
         //     }
         // }
 
-        stage('Upload to ECS') {
-            agent any
-            steps {
-                unstash 'build-artifacts'
-                sh 'cat target/ecr_password.txt | docker login --username AWS --password-stdin 430517113162.dkr.ecr.ap-northeast-1.amazonaws.com'
-                sh 'docker tag myapp:latest 430517113162.dkr.ecr.ap-northeast-1.amazonaws.com/myapp:latest'
-                sh 'docker push 430517113162.dkr.ecr.ap-northeast-1.amazonaws.com/myapp:latest'
+        // stage('Upload to ECS') {
+        //     agent any
+        //     steps {
+        //         unstash 'build-artifacts'
+        //         sh 'cat target/ecr_password.txt | docker login --username AWS --password-stdin 430517113162.dkr.ecr.ap-northeast-1.amazonaws.com'
+        //         sh 'docker tag myapp:latest 430517113162.dkr.ecr.ap-northeast-1.amazonaws.com/myapp:latest'
+        //         sh 'docker push 430517113162.dkr.ecr.ap-northeast-1.amazonaws.com/myapp:latest'
 
-            }
-        }
+        //     }
+        // }
 
     }
 }
