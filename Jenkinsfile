@@ -41,9 +41,9 @@ pipeline {
                     def config = readJSON file: 'config.json'
                     
                     // 使用 JSON 数据
-                    echo "Cluster Name: ${config.clusterName}"
-                    echo "Repository URI: ${config.repositoryUri}"
-                    echo "Region: ${config.region}"
+                    echo "Cluster Name: ${config.family}"
+                    echo "Repository URI: ${config.containerDefinitions}"
+                    echo "Region: ${config.requiresCompatibilities}"
                 }
             }
         }
