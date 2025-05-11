@@ -1,7 +1,7 @@
 {
     "family": "myapp-fargate",
     "networkMode": "awsvpc",
-    "taskRoleArn": "arn:aws:iam::430517113162:user/test1234",
+    "taskRoleArn": "arn:aws:iam::430517113162:role/admin_role",
     "containerDefinitions": [
         {
             "name": "myapp-fargate-app",
