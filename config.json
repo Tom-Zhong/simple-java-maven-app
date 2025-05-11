@@ -1,7 +1,7 @@
 {
     "family": "myapp-fargate",
     "networkMode": "awsvpc",
-    "taskRoleArn": "arn:aws:iam::430517113162:role/ECS_FullyROLE",
+    "taskRoleArn": "arn:aws:iam::430517113162:role/AWSServiceRoleForECS",
     "containerDefinitions": [
         {
             "name": "myapp-fargate-app",
