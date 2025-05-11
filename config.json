@@ -1,10 +1,10 @@
 {
-    "family": "sample-fargate",
+    "family": "myapp-fargate",
     "networkMode": "awsvpc",
-    "taskRoleArn": "arn:aws:iam::aws_account_id:role/execCommandRole",
+    "taskRoleArn": "arn:aws:iam::430517113162:user/test1234",
     "containerDefinitions": [
         {
-            "name": "fargate-app",
+            "name": "myapp-fargate-app",
             "image": "public.ecr.aws/docker/library/httpd:latest",
             "portMappings": [
                 {

@@ -26,27 +26,34 @@ pipeline {
                 sh 'mvn -B -DskipTests clean package'
                 sh 'aws ecr get-login-password --region ap-northeast-1 > target/ecr_password.txt'
                 stash name: 'build-artifacts', includes: 'target/**/*'
+                sh 'aws ecs create-cluster --cluster-name myapp-cluster'
+                sh 'aws ecs register-task-definition --cli-input-json config.json'
+                sh 'aws ecs list-task-definitions'
+                
+                sh 'aws ecs create-service --cluster myapp-cluster --service-name myapp-fargate-service --task-definition mmyapp-fargate:1 --desired-count 1 --launch-type "FARGATE" --network-configuration "awsvpcConfiguration={subnets=[subnet-0f207c5cfef2743a8],securityGroups=sg-08ce3188ffc0733fe,assignPublicIp=ENABLED}"'
+                sh 'aws ecs list-services --cluster myapp-cluster'
+                sh 'aws ecs describe-services --cluster myapp-cluster --services myapp-fargate-service'
             }
         }
 
-        stage('Read JSON Config') {
-            agent {
-                dockerfile {
-                    filename 'Dockerfile' // 指定 Dockerfile 文件名
-                }
-            }
-            steps {
-                script {
-                    // 读取 JSON 文件
-                    def config = readJSON file: 'config.json'
+        // stage('Read JSON Config') {
+        //     agent {
+        //         dockerfile {
+        //             filename 'Dockerfile' // 指定 Dockerfile 文件名
+        //         }
+        //     }
+        //     steps {
+        //         script {
+        //             // 读取 JSON 文件
+        //             def config = readJSON file: 'config.json'
                     
-                    // 使用 JSON 数据
-                    echo "Cluster Name: ${config.family}"
-                    echo "Repository URI: ${config.containerDefinitions}"
-                    echo "Region: ${config.requiresCompatibilities}"
-                }
-            }
-        }
+        //             // 使用 JSON 数据
+        //             echo "Cluster Name: ${config.family}"
+        //             echo "Repository URI: ${config.containerDefinitions}"
+        //             echo "Region: ${config.requiresCompatibilities}"
+        //         }
+        //     }
+        // }
 
         // stage('Read JSON') {
         //     agent {
@@ -118,16 +125,16 @@ pipeline {
         //     }
         // }
 
-        // stage('Upload to ECS') {
-        //     agent any
-        //     steps {
-        //         unstash 'build-artifacts'
-        //         sh 'cat target/ecr_password.txt | docker login --username AWS --password-stdin 430517113162.dkr.ecr.ap-northeast-1.amazonaws.com'
-        //         sh 'docker tag myapp:latest 430517113162.dkr.ecr.ap-northeast-1.amazonaws.com/myapp:latest'
-        //         sh 'docker push 430517113162.dkr.ecr.ap-northeast-1.amazonaws.com/myapp:latest'
-        //         // sh 'aws ecs create-cluster --cluster-name myapp-cluster'
-        //     }
-        // }
+        stage('Upload to ECS') {
+            agent any
+            steps {
+                unstash 'build-artifacts'
+                sh 'cat target/ecr_password.txt | docker login --username AWS --password-stdin 430517113162.dkr.ecr.ap-northeast-1.amazonaws.com'
+                sh 'docker tag myapp:latest 430517113162.dkr.ecr.ap-northeast-1.amazonaws.com/myapp:latest'
+                sh 'docker push 430517113162.dkr.ecr.ap-northeast-1.amazonaws.com/myapp:latest'
+
+            }
+        }
 
     }
 }
