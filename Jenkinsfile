@@ -30,14 +30,16 @@ pipeline {
         }
 
         stage('Read JSON') {
-             script {
-                // 读取 JSON 文件
-                def config = readJSON file: 'fargate-task.json'
-                
-                // 使用 JSON 数据
-                echo "Cluster Name: ${config.familyfamily}"
-                echo "Repository URI: ${config.containerDefinitions}"
-                echo "Region: ${config.requiresCompatibilities}"
+            steps {
+                script {
+                    // 读取 JSON 文件
+                    def config = readJSON file: 'fargate-task.json'
+                    
+                    // 使用 JSON 数据
+                    echo "Cluster Name: ${config.familyfamily}"
+                    echo "Repository URI: ${config.containerDefinitions}"
+                    echo "Region: ${config.requiresCompatibilities}"
+                }
             }
         }
 
