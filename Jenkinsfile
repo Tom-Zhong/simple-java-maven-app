@@ -30,10 +30,15 @@ pipeline {
         }
 
         stage('Read JSON') {
+            agent {
+                dockerfile {
+                    filename 'Dockerfile' // 指定 Dockerfile 文件名
+                }
+            }
             steps {
                 script {
                     // 读取 JSON 文件
-                    def config = readJSON file: 'fargate-task.json'
+                    def config = readJSON file: 'fargateTask.json'
                     
                     // 使用 JSON 数据
                     echo "Cluster Name: ${config.familyfamily}"
