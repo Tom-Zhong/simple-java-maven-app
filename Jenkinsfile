@@ -26,7 +26,7 @@ pipeline {
                 sh 'mvn -B -DskipTests clean package'
                 sh 'aws ecr get-login-password --region ap-northeast-1 > target/ecr_password.txt'
                 stash name: 'build-artifacts', includes: 'target/**/*'
-                // sh 'aws ecs create-cluster --cluster-name myapp-cluster'
+                sh 'aws ecs create-cluster --cluster-name myapp-cluster'
                 // sh 'aws ecs register-task-definition --cli-input-json file://config.json'
                 sh 'aws ecs list-task-definitions'
                 
