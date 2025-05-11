@@ -29,14 +29,26 @@ pipeline {
             }
         }
 
-        stage('Build Docker Image') {
-            agent any
-            steps {
-                unstash 'build-artifacts'
-                sh 'docker build -t myapp:latest -f DockerfileIMG .'
-                sh 'docker images'
+        stage('Read JSON') {
+             script {
+                // 读取 JSON 文件
+                def config = readJSON file: 'fargate-task.json'
+                
+                // 使用 JSON 数据
+                echo "Cluster Name: ${config.familyfamily}"
+                echo "Repository URI: ${config.containerDefinitions}"
+                echo "Region: ${config.requiresCompatibilities}"
             }
         }
+
+        // stage('Build Docker Image') {
+        //     agent any
+        //     steps {
+        //         unstash 'build-artifacts'
+        //         sh 'docker build -t myapp:latest -f DockerfileIMG .'
+        //         sh 'docker images'
+        //     }
+        // }
 
         // stage('Test') {
         //     agent {
@@ -80,15 +92,16 @@ pipeline {
         //     }
         // }
 
-        stage('Upload to ECS') {
-            agent any
-            steps {
-                unstash 'build-artifacts'
-                sh 'cat target/ecr_password.txt | docker login --username AWS --password-stdin 430517113162.dkr.ecr.ap-northeast-1.amazonaws.com'
-                sh 'docker tag myapp:latest 430517113162.dkr.ecr.ap-northeast-1.amazonaws.com/myapp:latest'
-                sh 'docker push 430517113162.dkr.ecr.ap-northeast-1.amazonaws.com/myapp:latest'
-            }
-        }
+        // stage('Upload to ECS') {
+        //     agent any
+        //     steps {
+        //         unstash 'build-artifacts'
+        //         sh 'cat target/ecr_password.txt | docker login --username AWS --password-stdin 430517113162.dkr.ecr.ap-northeast-1.amazonaws.com'
+        //         sh 'docker tag myapp:latest 430517113162.dkr.ecr.ap-northeast-1.amazonaws.com/myapp:latest'
+        //         sh 'docker push 430517113162.dkr.ecr.ap-northeast-1.amazonaws.com/myapp:latest'
+        //         // sh 'aws ecs create-cluster --cluster-name myapp-cluster'
+        //     }
+        // }
 
     }
 }
