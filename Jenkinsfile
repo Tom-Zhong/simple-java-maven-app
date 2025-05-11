@@ -37,8 +37,8 @@ pipeline {
                     
                     // 使用 JSON 数据
                     echo "Cluster Name: ${config.familyfamily}"
-                    echo "Repository URI: ${config.containerDefinitions}"
-                    echo "Region: ${config.requiresCompatibilities}"
+                    // echo "Repository URI: ${config.containerDefinitions}"
+                    // echo "Region: ${config.requiresCompatibilities}"
                 }
             }
         }
