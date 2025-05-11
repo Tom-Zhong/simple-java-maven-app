@@ -29,7 +29,7 @@ pipeline {
             }
         }
 
-        stage('Read JSON') {
+        stage('Read JSON Config') {
             agent {
                 dockerfile {
                     filename 'Dockerfile' // 指定 Dockerfile 文件名
@@ -38,15 +38,34 @@ pipeline {
             steps {
                 script {
                     // 读取 JSON 文件
-                    def config = readJSON file: 'fargateTask.json'
+                    def config = readJSON file: 'config.json'
                     
                     // 使用 JSON 数据
-                    echo "Cluster Name: ${config.familyfamily}"
-                    // echo "Repository URI: ${config.containerDefinitions}"
-                    // echo "Region: ${config.requiresCompatibilities}"
+                    echo "Cluster Name: ${config.clusterName}"
+                    echo "Repository URI: ${config.repositoryUri}"
+                    echo "Region: ${config.region}"
                 }
             }
         }
+
+        // stage('Read JSON') {
+        //     agent {
+        //         dockerfile {
+        //             filename 'Dockerfile' // 指定 Dockerfile 文件名
+        //         }
+        //     }
+        //     steps {
+        //         script {
+        //             // 读取 JSON 文件
+        //             def config = readJSON file: 'fargateTask.json'
+                    
+        //             // 使用 JSON 数据
+        //             echo "Cluster Name: ${config.familyfamily}"
+        //             // echo "Repository URI: ${config.containerDefinitions}"
+        //             // echo "Region: ${config.requiresCompatibilities}"
+        //         }
+        //     }
+        // }
 
         // stage('Build Docker Image') {
         //     agent any
