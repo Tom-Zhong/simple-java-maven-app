@@ -27,7 +27,7 @@ pipeline {
                 sh 'aws ecr get-login-password --region ap-northeast-1 > target/ecr_password.txt'
                 stash name: 'build-artifacts', includes: 'target/**/*'
                 sh 'aws ecs create-cluster --cluster-name myapp-cluster'
-                // sh 'aws ecs register-task-definition --cli-input-json file://config.json'
+                sh 'aws ecs register-task-definition --cli-input-json file://config.json'
                 sh 'aws ecs list-task-definitions'
                 
                 sh 'aws ecs create-service --cluster myapp-cluster --service-name myapp-fargate-service --task-definition myapp-fargate:1 --desired-count 1 --launch-type "FARGATE" --network-configuration "awsvpcConfiguration={subnets=subnet-0f207c5cfef2743a8,securityGroups=sg-08ce3188ffc0733fe,assignPublicIp=ENABLED}"'
