@@ -30,10 +30,10 @@ pipeline {
                 sh 'aws ecs register-task-definition --cli-input-json file://config.json'
                 sh 'aws ecs list-task-definitions'
                 
-                // sh 'aws ecs create-service --cluster myapp-cluster --service-name myapp-fargate-service --task-definition myapp-fargate:6 --desired-count 1 --launch-type "FARGATE" --network-configuration "awsvpcConfiguration={subnets=subnet-0f207c5cfef2743a8,securityGroups=sg-08ce3188ffc0733fe,assignPublicIp=ENABLED}"'
-                // sh 'aws ecs list-services --cluster myapp-cluster'
-                // sh 'aws ecs describe-services --cluster myapp-cluster --services myapp-fargate-service'
-                // sh 'aws ecs list-tasks --cluster myapp-cluster  --service myapp-fargate-service'
+                sh 'aws ecs create-service --cluster myapp-cluster --service-name myapp-fargate-service --task-definition myapp-fargate:6 --desired-count 1 --launch-type "FARGATE" --network-configuration "awsvpcConfiguration={subnets=subnet-0f207c5cfef2743a8,securityGroups=sg-08ce3188ffc0733fe,assignPublicIp=ENABLED}"'
+                sh 'aws ecs list-services --cluster myapp-cluster'
+                sh 'aws ecs describe-services --cluster myapp-cluster --services myapp-fargate-service'
+                sh 'aws ecs list-tasks --cluster myapp-cluster  --service myapp-fargate-service'
             }
         }
 
